@@ -15,7 +15,7 @@ def recommend_AI(message):
     tokenizer.do_lower_case = True  # due to some bug of tokenizer config loading
 
     model = RobertaForMaskedLM.from_pretrained("rinna/japanese-roberta-base")
-    st.subheader("AIがあなたにおすすめするのは〜")
+    st.subheader("AIがあなたにおすすめする内容")
     message = '私は'+ message + 'と[MASK]が好きです'
 
     # original text
