@@ -1,11 +1,3 @@
-from transformers import T5Tokenizer, RobertaForMaskedLM
-import streamlit as st
-
-tokenizer = T5Tokenizer.from_pretrained("rinna/japanese-roberta-base")
-tokenizer.do_lower_case = True  # due to some bug of tokenizer config loading
-
-model = RobertaForMaskedLM.from_pretrained("rinna/japanese-roberta-base")
-
 st.title("興味深掘り支援AI")
 st.subheader("あなたが興味あることを入力してください")
 #st.subheader("例：私は釣りと[MASK]が好きです")
@@ -14,6 +6,13 @@ message = st.text_input("例：釣り")
 
 
 def recommend_AI(message):
+    from transformers import T5Tokenizer, RobertaForMaskedLM
+    import streamlit as st
+
+    tokenizer = T5Tokenizer.from_pretrained("rinna/japanese-roberta-base")
+    tokenizer.do_lower_case = True  # due to some bug of tokenizer config loading
+
+    model = RobertaForMaskedLM.from_pretrained("rinna/japanese-roberta-base")
     st.subheader("あなたにおすすめの内容")
     message = '私は'+ message + 'と[MASK]が好きです'
 
