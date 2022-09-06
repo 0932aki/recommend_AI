@@ -15,8 +15,8 @@ def recommend_AI(message):
     tokenizer.do_lower_case = True  # due to some bug of tokenizer config loading
 
     model = RobertaForMaskedLM.from_pretrained("rinna/japanese-roberta-base")
-    st.subheader("あなたにおすすめの内容")
-    message = '私は'+ message + 'と[MASK]が好きです'
+    st.subheader("あなたにおすすめ!")
+    message = '私は'+ message + 'と[MASK]に興味がある'
 
     # original text
     text_orig = message
@@ -51,7 +51,7 @@ def recommend_AI(message):
     for i, index_t in enumerate(predictions.indices):
         index = index_t.item()
         token = tokenizer.convert_ids_to_tokens([index])[0]
-        st.write(i, token)
+        st.write(i+1, token)
 
 if st.button("送信"):
     recommend_AI(message)
