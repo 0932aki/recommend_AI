@@ -62,7 +62,7 @@ if st.button("送信"):
 
 
 st.subheader("深まり支援")
-message2 = st.text_input("例：釣り")
+message2 = st.text_input()
 
 
 
