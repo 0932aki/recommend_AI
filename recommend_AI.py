@@ -61,12 +61,12 @@ if st.button("広がり依頼"):
 
 
 
-st.subheader("深まり支援")
-message2 = st.text_input('例：ドライブ')
+#st.subheader("深まり支援")
+#message2 = st.text_input('例：ドライブ')
 
 
 
-def recommend_AI(message2):
+def recommend_AI2(message2):
     from transformers import T5Tokenizer, RobertaForMaskedLM
     
 
@@ -114,4 +114,4 @@ def recommend_AI(message2):
             st.write(i+1, token)
 
 if st.button("深まり依頼"):
-    recommend_AI(message)
+    recommend_AI2(message)
