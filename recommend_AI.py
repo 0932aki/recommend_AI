@@ -15,7 +15,7 @@ message = st.text_input("例：釣り")
 
 def recommend_AI(message):
     st.subheader("あなたにおすすめの内容")
-    message = '私は'+ messege + 'と[MASK]が好きです'
+    message = '私は'+ message + 'と[MASK]が好きです'
 
     # original text
     text_orig = message
