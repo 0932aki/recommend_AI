@@ -8,10 +8,11 @@ model = RobertaForMaskedLM.from_pretrained("rinna/japanese-roberta-base")
 
 st.title("興味深掘り支援AI")
 st.subheader("あなたの興味あることを[MASK]と合わせて入力してください")
-message = st.text_input("メッセージ")
+#st.subheader("例：私は釣りと[MASK]が好きです")
+message = st.text_input("例：私は釣りと[MASK]が好きです")
 
 
-if message:
+def recommend_AI(message):
     # original text
     text_orig = message
 
@@ -46,3 +47,6 @@ if message:
         index = index_t.item()
         token = tokenizer.convert_ids_to_tokens([index])[0]
         st.write(i, token)
+
+if st.button("送信"):
+    recommend_AI(message)
