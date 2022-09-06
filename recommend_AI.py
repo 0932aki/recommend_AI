@@ -2,7 +2,7 @@ import streamlit as st
 
 st.title("興味深掘り支援AI")
 st.subheader("あなたが興味あることを入力してください")
-st.subheader("広がり支援")
+st.write("広がり依頼は同系列の内容，深まり依頼は関連する内容が提案されます")
 #st.subheader("例：私は釣りと[MASK]が好きです")
 message = st.text_input("例：釣り")
 
