@@ -55,7 +55,7 @@ def recommend_AI(message):
         if token not in  ['セックス']:
             st.write(i+1, token)
 
-if st.button("送信"):
+if st.button("広がり依頼"):
     recommend_AI(message)
 
 
@@ -113,5 +113,5 @@ def recommend_AI(message2):
         if token not in  ['セックス']:
             st.write(i+1, token)
 
-if st.button("送信"):
+if st.button("深まり依頼"):
     recommend_AI(message)
