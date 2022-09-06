@@ -59,14 +59,14 @@ if st.button("送信"):
     recommend_AI(message)
 
 
-import streamlit as st
+
 
 st.subheader("深まり支援")
-message = st.text_input("例：釣り")
+message2 = st.text_input("例：釣り")
 
 
 
-def recommend_AI(message):
+def recommend_AI(message2):
     from transformers import T5Tokenizer, RobertaForMaskedLM
     
 
@@ -75,10 +75,10 @@ def recommend_AI(message):
 
     model = RobertaForMaskedLM.from_pretrained("rinna/japanese-roberta-base")
     st.subheader("AIがあなたにおすすめする内容")
-    message = '私は'+ message + 'の中でも特に[MASK]が好きです'
+    message = '私は'+ message2 + 'の中でも特に[MASK]が好きです'
 
     # original text
-    text_orig = message
+    text_orig = message2
 
     # prepend [CLS]
     text = "[CLS]" + text_orig
