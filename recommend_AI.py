@@ -51,7 +51,8 @@ def recommend_AI(message):
     for i, index_t in enumerate(predictions.indices):
         index = index_t.item()
         token = tokenizer.convert_ids_to_tokens([index])[0]
-        st.write(i+1, token)
+        if token != ['セックス']:
+            st.write(i+1, token)
 
 if st.button("送信"):
     recommend_AI(message)
