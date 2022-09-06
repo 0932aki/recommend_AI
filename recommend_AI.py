@@ -75,7 +75,7 @@ def recommend_AI(message2):
 
     model = RobertaForMaskedLM.from_pretrained("rinna/japanese-roberta-base")
     st.subheader("AIがあなたにおすすめする内容")
-    message = '私は'+ message2 + 'の中でも特に[MASK]が好きです'
+    message2 = '私は'+ message2 + 'の中でも特に[MASK]が好きです'
 
     # original text
     text_orig = message2
