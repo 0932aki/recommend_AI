@@ -1,10 +1,19 @@
 import streamlit as st
+import pandas as pd
+from PIL import Image
 
-st.title("興味深掘り支援AI")
-st.subheader("あなたが興味あることを入力してください")
+
+st.title("好きなこと深掘り支援AI")
+
+image = Image.open('ai.png')
+
+st.image(image)
+
+st.subheader("ステージ1：好きなこと探しのきっかけ作り")
+st.write("あなたが興味あることを入力してください")
 st.write("広がり依頼は同系列の内容，深まり依頼は関連する内容が提案されます")
 #st.subheader("例：私は釣りと[MASK]が好きです")
-message = st.text_input("例：釣り")
+message = st.text_input("↓単語で入力してください　例：プログラミング")
 
 
 
@@ -55,7 +64,7 @@ def recommend_AI(message):
         if token not in  ['セックス']:
             st.write(i+1, token)
 
-if st.button("広がり依頼"):
+if st.button("AIに興味を広げるヒントを教えてもらう"):
     recommend_AI(message)
 
 
@@ -113,16 +122,25 @@ def recommend_AI2(message2):
         if token not in  ['セックス']:
             st.write(i+1, token)
 
-if st.button("深まり依頼"):
+if st.button("AIに興味を深めるヒントを教えてもらう"):
     recommend_AI2(message)
 
 
-keyword1 = st.text_input("キーワード1")
-keyword2 = st.text_input("キーワード2")
+st.subheader("ステージ2：好きなことの探究")
+
+number = st.slider('キーワード数', 1, 10, 2)
+keyword_list = []
+for i in range(number):
+    a = 'keyword' + str(i+1)
+    a = st.text_input("キーワード"+str(i+1))
+    keyword_list.append(a)
+
+#keyword1 = st.text_input("キーワード1")
+#keyword2 = st.text_input("キーワード2")
 
 
 
-def recommend_AI3(keyword1,keyword2):
+def recommend_AI3(keyword_list):
     from transformers import T5Tokenizer, RobertaForMaskedLM
     
 
@@ -130,8 +148,19 @@ def recommend_AI3(keyword1,keyword2):
     tokenizer.do_lower_case = True  # due to some bug of tokenizer config loading
 
     model = RobertaForMaskedLM.from_pretrained("rinna/japanese-roberta-base")
+    
+
+    message12 = '私は'
+
+    for k in keyword_list:
+        message12 += k + 'の'
+
+    st.write(pd.DataFrame({'keyword':keyword_list}))    
+
     st.subheader("AIがあなたにおすすめする内容")
-    message12 = '私は'+ keyword1 + 'の' + keyword2 + 'の[MASK]についてよく知っています'
+
+    message12 += '[MASK]についてよく知っています'
+    
 
     # original text
     text_orig = message12
@@ -168,6 +197,8 @@ def recommend_AI3(keyword1,keyword2):
         token = tokenizer.convert_ids_to_tokens([index])[0]
         if token not in  ['セックス']:
             st.write(i+1, token)
+            
+    
 
-if st.button("さらに深まり依頼"):
-    recommend_AI3(keyword1,keyword2)
+if st.button("AIにさらに興味を深めるヒントを教えてもらう"):
+    recommend_AI3(keyword_list)
