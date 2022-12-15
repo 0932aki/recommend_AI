@@ -2,12 +2,11 @@ import streamlit as st
 import pandas as pd
 from PIL import Image
 
+image = Image.open('logo.png')
+
+st.image(image,width=100)
 
 st.title("好きなこと探しを支援するAI")
-
-image = Image.open('ai.png')
-
-st.image(image)
 
 st.subheader("ステージ1：好きなこと探しのきっかけ作り")
 st.write("少しでも好きなことや興味あることを入力してください")
