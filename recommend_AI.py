@@ -11,12 +11,10 @@ st.title("好きなこと探しを支援するAI")
 st.subheader("ステージ1：好きなこと探しのきっかけ作り")
 st.write("少しでも好きなことや興味あることを入力してください")
 
-#st.subheader("例：私は釣りと[MASK]が好きです")
 message = st.text_input("↓単語で入力してください　例：プログラミング")
 
-
-
-def recommend_AI(message):
+@st.cache
+def BERT():
     from transformers import T5Tokenizer, RobertaForMaskedLM
     
 
@@ -24,8 +22,17 @@ def recommend_AI(message):
     tokenizer.do_lower_case = True  # due to some bug of tokenizer config loading
 
     model = RobertaForMaskedLM.from_pretrained("rinna/japanese-roberta-base")
-    st.subheader("AIがあなたにおすすめする内容")
-    message = '私は'+ message + 'と[MASK]が好きです'
+
+    return model,tokenizer
+
+model,tokenizer = BERT()
+
+def recommend_AI(message):
+
+    model,tokenizer = BERT()
+    
+    st.subheader("AIがあなたにおすすめするキーワード")
+    message = '私は'+ message + 'と[MASK]に関心があります。'
 
     # original text
     text_orig = message
@@ -53,15 +60,19 @@ def recommend_AI(message):
     model = model.eval()
     with torch.no_grad():
         outputs = model(token_tensor)
-        predictions = outputs[0][0, masked_idx].topk(10)
+        predictions = outputs[0][0, masked_idx].topk(15)
 
     #print(text_orig)
 
     for i, index_t in enumerate(predictions.indices):
         index = index_t.item()
         token = tokenizer.convert_ids_to_tokens([index])[0]
-        if token not in  ['セックス']:
-            st.write(i+1, token)
+        if token not in  ['セックス','ポルノ']:
+            if token == '<unk>':
+                token = '-'
+                st.write(i+1, token)
+            else:
+                st.write(i+1, token)
 
 if st.button("AIに興味を広げるヒントを教えてもらう"):
     recommend_AI(message)
@@ -75,16 +86,12 @@ if st.button("AIに興味を広げるヒントを教えてもらう"):
 
 
 def recommend_AI2(message2):
-    from transformers import T5Tokenizer, RobertaForMaskedLM
+
+    model,tokenizer = BERT()
+
+    st.subheader("AIがあなたにおすすめするキーワード")
+    message2 = '私は'+ message2 + 'が大好きです。それは、[MASK]だからです。'
     
-
-    tokenizer = T5Tokenizer.from_pretrained("rinna/japanese-roberta-base")
-    tokenizer.do_lower_case = True  # due to some bug of tokenizer config loading
-
-    model = RobertaForMaskedLM.from_pretrained("rinna/japanese-roberta-base")
-    st.subheader("AIがあなたにおすすめする内容")
-    message2 = '私は'+ message2 + 'の[MASK]をよく知っています'
-
     # original text
     text_orig = message2
 
@@ -111,15 +118,19 @@ def recommend_AI2(message2):
     model = model.eval()
     with torch.no_grad():
         outputs = model(token_tensor)
-        predictions = outputs[0][0, masked_idx].topk(10)
+        predictions = outputs[0][0, masked_idx].topk(15)
 
     #print(text_orig)
 
     for i, index_t in enumerate(predictions.indices):
         index = index_t.item()
         token = tokenizer.convert_ids_to_tokens([index])[0]
-        if token not in  ['セックス']:
-            st.write(i+1, token)
+        if token not in  ['セックス','ポルノ']:
+            if token == '<unk>':
+                token = '-'
+                st.write(i+1, token)
+            else:
+                st.write(i+1, token)
 
 if st.button("AIに興味を深めるヒントを教えてもらう"):
     recommend_AI2(message)
@@ -127,9 +138,9 @@ if st.button("AIに興味を深めるヒントを教えてもらう"):
 st.subheader("")
 
 st.subheader("ステージ2：好きなことの探究")
-st.write("キーワードを増やして好きなことを深めていきましょう")
+st.write("ステージ1のキーワードをスタートに好きなことを深めていきましょう")
 
-number = st.slider('キーワード数', 1, 10, 2)
+number = st.slider('キーワード数', 1, 10, 1)
 keyword_list = []
 for i in range(number):
     a = 'keyword' + str(i+1)
@@ -142,29 +153,24 @@ for i in range(number):
 
 
 def recommend_AI3(keyword_list):
-    from transformers import T5Tokenizer, RobertaForMaskedLM
+
+    model,tokenizer = BERT()
     
 
-    tokenizer = T5Tokenizer.from_pretrained("rinna/japanese-roberta-base")
-    tokenizer.do_lower_case = True  # due to some bug of tokenizer config loading
-
-    model = RobertaForMaskedLM.from_pretrained("rinna/japanese-roberta-base")
-    
-
-    message12 = '私は'
+    concatenated = '私は'
 
     for k in keyword_list:
-        message12 += k + 'の'
+        concatenated += k + '、'
 
     st.write(pd.DataFrame({'keyword':keyword_list}))    
 
-    st.subheader("AIがあなたにおすすめする内容")
+    st.subheader("AIがあなたにおすすめするキーワード")
 
-    message12 += '[MASK]についてよく知っています'
+    concatenated += 'の[MASK]について調査しています。'
     
 
     # original text
-    text_orig = message12
+    text_orig = concatenated
 
     # prepend [CLS]
     text = "[CLS]" + text_orig
@@ -189,15 +195,19 @@ def recommend_AI3(keyword_list):
     model = model.eval()
     with torch.no_grad():
         outputs = model(token_tensor)
-        predictions = outputs[0][0, masked_idx].topk(10)
+        predictions = outputs[0][0, masked_idx].topk(15)
 
     #print(text_orig)
 
     for i, index_t in enumerate(predictions.indices):
         index = index_t.item()
         token = tokenizer.convert_ids_to_tokens([index])[0]
-        if token not in  ['セックス']:
-            st.write(i+1, token)
+        if token not in  ['セックス','ポルノ']:
+            if token == '<unk>':
+                token = '-'
+                st.write(i+1, token)
+            else:
+                st.write(i+1, token)
             
     
 
