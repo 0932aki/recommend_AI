@@ -2,16 +2,21 @@ import streamlit as st
 import pandas as pd
 from PIL import Image
 
-image = Image.open('logo.png')
+image1 = Image.open('logo.jpg')
+image2 = Image.open('mogu.jpeg')
 
-st.image(image,width=100)
+col1, col2, col3, col4, col5, col5 = st.columns(6)
+with col1:
+   st.image(image1,width=100)
+with col2:
+   st.image(image2,width=100)
 
 st.title("好きなこと探しを支援するAI")
-
 st.subheader("ステージ1：好きなこと探しのきっかけ作り")
 st.write("少しでも好きなことや興味あることを入力してください")
-
 message = st.text_input("↓単語で入力してください　例：プログラミング")
+
+
 
 @st.cache
 def BERT():
@@ -27,12 +32,15 @@ def BERT():
 
 model,tokenizer = BERT()
 
+
+
+
 def recommend_AI(message):
 
     model,tokenizer = BERT()
     
     st.subheader("AIがあなたにおすすめするキーワード")
-    message = '私は'+ message + 'と[MASK]に関心があります。'
+    message = '私は'+ message + 'と[MASK]が大好きです。'
 
     # original text
     text_orig = message
@@ -67,7 +75,7 @@ def recommend_AI(message):
     for i, index_t in enumerate(predictions.indices):
         index = index_t.item()
         token = tokenizer.convert_ids_to_tokens([index])[0]
-        if token not in  ['セックス','ポルノ']:
+        if token not in  ['セックス','ポルノ','セクシー']:
             if token == '<unk>':
                 token = '-'
                 st.write(i+1, token)
@@ -78,10 +86,6 @@ if st.button("AIに興味を広げるヒントを教えてもらう"):
     recommend_AI(message)
 
 
-
-
-#st.subheader("深まり支援")
-#message2 = st.text_input('例：ドライブ')
 
 
 
@@ -125,7 +129,7 @@ def recommend_AI2(message2):
     for i, index_t in enumerate(predictions.indices):
         index = index_t.item()
         token = tokenizer.convert_ids_to_tokens([index])[0]
-        if token not in  ['セックス','ポルノ']:
+        if token not in  ['セックス','ポルノ','セクシー']:
             if token == '<unk>':
                 token = '-'
                 st.write(i+1, token)
@@ -147,8 +151,6 @@ for i in range(number):
     a = st.text_input("キーワード"+str(i+1))
     keyword_list.append(a)
 
-#keyword1 = st.text_input("キーワード1")
-#keyword2 = st.text_input("キーワード2")
 
 
 
@@ -202,7 +204,7 @@ def recommend_AI3(keyword_list):
     for i, index_t in enumerate(predictions.indices):
         index = index_t.item()
         token = tokenizer.convert_ids_to_tokens([index])[0]
-        if token not in  ['セックス','ポルノ']:
+        if token not in  ['セックス','ポルノ','セクシー']:
             if token == '<unk>':
                 token = '-'
                 st.write(i+1, token)
