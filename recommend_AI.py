@@ -3,15 +3,15 @@ import pandas as pd
 from PIL import Image
 
 
-st.title("好きなこと深掘り支援AI")
+st.title("好きなこと探しを支援するAI")
 
 image = Image.open('ai.png')
 
 st.image(image)
 
 st.subheader("ステージ1：好きなこと探しのきっかけ作り")
-st.write("あなたが興味あることを入力してください")
-st.write("広がり依頼は同系列の内容，深まり依頼は関連する内容が提案されます")
+st.write("少しでも好きなことや興味あることを入力してください")
+
 #st.subheader("例：私は釣りと[MASK]が好きです")
 message = st.text_input("↓単語で入力してください　例：プログラミング")
 
@@ -125,8 +125,10 @@ def recommend_AI2(message2):
 if st.button("AIに興味を深めるヒントを教えてもらう"):
     recommend_AI2(message)
 
+st.subheader("")
 
 st.subheader("ステージ2：好きなことの探究")
+st.write("キーワードを増やして好きなことを深めていきましょう")
 
 number = st.slider('キーワード数', 1, 10, 2)
 keyword_list = []
