@@ -166,7 +166,7 @@ def recommend_AI3(keyword_list):
 
     st.subheader("AIがあなたにおすすめするキーワード")
 
-    concatenated += 'の[MASK]について調査しています。'
+    concatenated += 'の[MASK]について調査をしています。'
     
 
     # original text
