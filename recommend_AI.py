@@ -170,4 +170,4 @@ def recommend_AI3(keyword1,keyword2):
             st.write(i+1, token)
 
 if st.button("さらに深まり依頼"):
-    recommend_AI2(keyword1,keyword2)
+    recommend_AI3(keyword1,keyword2)
