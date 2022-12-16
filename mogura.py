@@ -15,8 +15,8 @@ with col6:
    st.image(image3,width=100)
 
 st.title("好きなことの探究支援AIアプリ")
-st.subheader("ステップ1：好きなことが見つからない人のきっかけ作り")
-st.write("少しでも興味あることを入力してください")
+st.subheader("ステップ1：好きが見つからない人のきっかけ作り")
+st.write("少しでも興味があることを入力してください")
 message = st.text_input("↓単語で入力してください　例：プログラミング")
 
 
