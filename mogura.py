@@ -4,12 +4,15 @@ from PIL import Image
 
 image1 = Image.open('logo.jpg')
 image2 = Image.open('mogu.jpeg')
+image3 = Image.open('rinna.png')
 
-col1, col2, col3, col4, col5, col5 = st.columns(6)
-with col1:
+col1, col2, col3, col4, col5, col6 = st.columns(6)
+with col4:
+   st.image(image2,width=80)
+with col5:
    st.image(image1,width=100)
-with col2:
-   st.image(image2,width=100)
+with col6:
+   st.image(image3,width=100)
 
 st.title("好きなことの探究支援AIアプリ")
 st.subheader("ステップ1：好きなことが見つからない人のきっかけ作り")
