@@ -11,9 +11,9 @@ with col1:
 with col2:
    st.image(image2,width=100)
 
-st.title("好きなこと探しを支援するAI")
-st.subheader("ステップ1：好きなこと探しのきっかけ作り")
-st.write("少しでも好きなことや興味あることを入力してください")
+st.title("好きなことの探究支援AIアプリ")
+st.subheader("ステップ1：好きなことが見つからない人のきっかけ作り")
+st.write("少しでも興味あることを入力してください")
 message = st.text_input("↓単語で入力してください　例：プログラミング")
 
 
@@ -35,15 +35,15 @@ model,tokenizer = BERT()
 
 
 
-def recommend_AI(message):
+def recommend_AI1(message1):
 
     model,tokenizer = BERT()
     
     st.subheader("AIがあなたにおすすめするキーワード")
-    message = '私は'+ message + 'と[MASK]が大好きです。'
+    message1 = '私は'+ message1 + 'と[MASK]が大好きです。'
 
     # original text
-    text_orig = message
+    text_orig = message1
 
     # prepend [CLS]
     text = "[CLS]" + text_orig
@@ -83,7 +83,7 @@ def recommend_AI(message):
                 st.write(i+1, token)
 
 if st.button("AIに好きを広げるヒントを聞く"):
-    recommend_AI(message)
+    recommend_AI1(message)
 
 
 
@@ -141,16 +141,79 @@ if st.button("AIに好きを深めるヒントを聞く"):
 
 
 
-def recommend_AI3(message2):
+
+st.subheader("")
+
+st.subheader("ステップ2：好きなことの概念化")
+st.write("自分の好きなことを抽象的に捉えましょう")
+
+message = st.text_input("↓単語で入力してください")
+
+
+
+def recommend_AI3(message3):
 
     model,tokenizer = BERT()
 
     st.subheader("AIがあなたにおすすめするキーワード")
-    message2 = '私は'+ message2 + 'が大好きです。それは、[MASK]だからです。'
-    
+    #message2 = '私は'+ message2 + 'が大好きです。それは、[MASK]だからです。'
+    message3 = '私は'+ message3 + 'の、[MASK]なところが大好きです。'
 
     # original text
-    text_orig = message2
+    text_orig = message3
+
+    # prepend [CLS]
+    text = "[CLS]" + text_orig
+
+    # tokenize
+    tokens = tokenizer.tokenize(text)
+    #print(tokens)
+
+    #print('mask index :' , tokens.index('[MASK]'))
+    masked_idx = tokens.index('[MASK]')
+
+    tokens[masked_idx] = tokenizer.mask_token
+
+    # convert to ids
+    token_ids = tokenizer.convert_tokens_to_ids(tokens)
+
+    # convert to tensor
+    import torch
+    token_tensor = torch.tensor([token_ids])
+
+    # get the top 10 predictions of the masked token
+    model = model.eval()
+    with torch.no_grad():
+        outputs = model(token_tensor)
+        predictions = outputs[0][0, masked_idx].topk(15)
+
+    #print(text_orig)
+
+    for i, index_t in enumerate(predictions.indices):
+        index = index_t.item()
+        token = tokenizer.convert_ids_to_tokens([index])[0]
+        if token not in  ['セックス','ポルノ','セクシー']:
+            if token == '<unk>':
+                token = '-'
+                st.write(i+1, token)
+            else:
+                st.write(i+1, token)
+
+if st.button("AIに好きな概念のヒントを聞く"):
+    recommend_AI3(message)
+
+
+
+def recommend_AI4(message4):
+
+    model,tokenizer = BERT()
+
+    st.subheader("AIがあなたにおすすめするキーワード")
+    message4 = '私は'+ message4 + 'が大好きです。それは、[MASK]だからです。'
+    #message2 = '私は'+ message2 + 'に対して[MASK]というイメージを持っています。'
+
+    # original text
+    text_orig = message4
 
     # prepend [CLS]
     text = "[CLS]" + text_orig
@@ -190,7 +253,7 @@ def recommend_AI3(message2):
                 st.write(i+1, token)
 
 if st.button("AIに好きな理由のヒントを聞く"):
-    recommend_AI3(message)
+    recommend_AI4(message)
 
 
 
@@ -198,10 +261,10 @@ if st.button("AIに好きな理由のヒントを聞く"):
 
 st.subheader("")
 
-st.subheader("ステップ2：好きなことの探究")
-st.write("ステップ1のキーワードをスタートに自分の好きを探究しましょう")
+st.subheader("ステップ3：好きなことの探究")
+st.write("キーワードを組み合わせて自分の好きを探究しましょう")
 
-number = st.slider('キーワード数', 1, 10, 1)
+number = st.slider('キーワード数', 1, 10, 2)
 keyword_list = []
 for i in range(number):
     a = 'keyword' + str(i+1)
@@ -211,7 +274,7 @@ for i in range(number):
 
 
 
-def recommend_AI4(keyword_list):
+def recommend_AI5(keyword_list):
 
     model,tokenizer = BERT()
     
@@ -271,4 +334,4 @@ def recommend_AI4(keyword_list):
     
 
 if st.button("AIにさらに好きを深めるヒントを聞く"):
-    recommend_AI4(keyword_list)
+    recommend_AI5(keyword_list)
