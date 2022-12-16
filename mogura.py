@@ -7,12 +7,15 @@ image2 = Image.open('mogu.jpeg')
 image3 = Image.open('rinna.png')
 
 col1, col2, col3, col4, col5, col6 = st.columns(6)
-with col4:
-   st.image(image2,width=80)
 with col5:
    st.image(image1,width=100)
 with col6:
    st.image(image3,width=100)
+
+col1, col2, col3 = st.columns(3)
+with col2:
+   st.image(image2,width=140)
+
 
 st.title("好きなことの探究支援AIアプリ")
 st.subheader("ステップ1：好きが見つからない人のきっかけ作り")
