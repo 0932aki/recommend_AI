@@ -209,14 +209,13 @@ if st.button("AIに好きな概念のヒントを聞く"):
     recommend_AI3(message)
 
 
-
 def recommend_AI4(message4):
 
     model,tokenizer = BERT()
 
     st.subheader("AIがあなたにおすすめするキーワード")
-    message4 = '私は'+ message4 + 'が大好きです。それは、[MASK]だからです。'
-    #message2 = '私は'+ message2 + 'に対して[MASK]というイメージを持っています。'
+    #message2 = '私は'+ message2 + 'が大好きです。それは、[MASK]だからです。'
+    message4 = '私は'+ message4 + 'の、[MASK]的なところが大好きです。'
 
     # original text
     text_orig = message4
@@ -258,8 +257,61 @@ def recommend_AI4(message4):
             else:
                 st.write(i+1, token)
 
-if st.button("AIに好きな理由のヒントを聞く"):
+if st.button("AIに好きな側面のヒントを聞く"):
     recommend_AI4(message)
+
+
+
+def recommend_AI5(message5):
+
+    model,tokenizer = BERT()
+
+    st.subheader("AIがあなたにおすすめするキーワード")
+    message5 = '私は'+ message5 + 'が大好きです。それは、[MASK]だからです。'
+    #message2 = '私は'+ message2 + 'に対して[MASK]というイメージを持っています。'
+
+    # original text
+    text_orig = message5
+
+    # prepend [CLS]
+    text = "[CLS]" + text_orig
+
+    # tokenize
+    tokens = tokenizer.tokenize(text)
+    #print(tokens)
+
+    #print('mask index :' , tokens.index('[MASK]'))
+    masked_idx = tokens.index('[MASK]')
+
+    tokens[masked_idx] = tokenizer.mask_token
+
+    # convert to ids
+    token_ids = tokenizer.convert_tokens_to_ids(tokens)
+
+    # convert to tensor
+    import torch
+    token_tensor = torch.tensor([token_ids])
+
+    # get the top 10 predictions of the masked token
+    model = model.eval()
+    with torch.no_grad():
+        outputs = model(token_tensor)
+        predictions = outputs[0][0, masked_idx].topk(15)
+
+    #print(text_orig)
+
+    for i, index_t in enumerate(predictions.indices):
+        index = index_t.item()
+        token = tokenizer.convert_ids_to_tokens([index])[0]
+        if token not in  ['セックス','ポルノ','セクシー']:
+            if token == '<unk>':
+                token = '-'
+                st.write(i+1, token)
+            else:
+                st.write(i+1, token)
+
+if st.button("AIに好きな理由のヒントを聞く"):
+    recommend_AI5(message)
 
 
 
@@ -280,7 +332,7 @@ for i in range(number):
 
 
 
-def recommend_AI5(keyword_list):
+def recommend_AI6(keyword_list):
 
     model,tokenizer = BERT()
     
@@ -340,4 +392,4 @@ def recommend_AI5(keyword_list):
     
 
 if st.button("AIにさらに好きを深めるヒントを聞く"):
-    recommend_AI5(keyword_list)
+    recommend_AI6(keyword_list)
