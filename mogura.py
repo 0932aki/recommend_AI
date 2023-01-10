@@ -17,7 +17,7 @@ with col2:
    st.image(image2,width=140)
 
 
-st.title("問題発見・テーマ設定支援AIアプリ")
+st.title("「好きなこと」探究支援AIアプリ")
 st.subheader("ステップ1：興味が見つからない人のきっかけ作り")
 st.write("少しでも興味があることを入力してください")
 message = st.text_input("↓単語で入力してください　例：プログラミング")
@@ -319,7 +319,7 @@ if st.button("AIに好きな理由のヒントを聞く"):
 
 st.subheader("")
 
-st.subheader("ステップ3：テーマ設定の探究")
+st.subheader("ステップ3：好きなことの探究")
 st.write("キーワードを組み合わせて自分の好きを探究しましょう")
 
 number = st.slider('キーワード数', 1, 10, 2)
